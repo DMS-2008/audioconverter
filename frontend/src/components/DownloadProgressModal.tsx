@@ -53,22 +53,22 @@ export const DownloadProgressModal: React.FC<DownloadProgressModalProps> = ({ jo
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-lg glass-panel rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl space-y-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0e0f12]/80 backdrop-blur-xl animate-fade-in">
+      <div className="relative w-full max-w-lg studio-card rounded-3xl p-6 sm:p-8 border border-[#28292e] shadow-2xl space-y-6">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-gray-400 hover:text-white rounded-full hover:bg-white/10 transition-colors"
+          className="absolute top-4 right-4 p-2 text-[#8e8e99] hover:text-[#e3e2e6] rounded-full hover:bg-white/5 transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Modal Title Header */}
         <div className="space-y-1 text-center">
-          <h3 className="text-xl font-extrabold text-white line-clamp-1">
+          <h3 className="text-xl font-bold text-[#e3e2e6] line-clamp-1">
             {mediaTitle}
           </h3>
-          <p className="text-xs font-mono text-amber-400">
+          <p className="text-xs font-mono text-[#a8c7fa]">
             JOB ID: {job.job_id.slice(0, 8)}...
           </p>
         </div>
@@ -84,7 +84,7 @@ export const DownloadProgressModal: React.FC<DownloadProgressModalProps> = ({ jo
                 r="42"
                 stroke="currentColor"
                 strokeWidth="8"
-                className="text-white/10"
+                className="text-white/5"
                 fill="transparent"
               />
               <circle
@@ -101,8 +101,8 @@ export const DownloadProgressModal: React.FC<DownloadProgressModalProps> = ({ jo
               />
               <defs>
                 <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#F59E0B" />
-                  <stop offset="100%" stopColor="#10B981" />
+                  <stop offset="0%" stopColor="#1a73e8" />
+                  <stop offset="100%" stopColor="#c07efd" />
                 </linearGradient>
               </defs>
             </svg>
@@ -110,57 +110,57 @@ export const DownloadProgressModal: React.FC<DownloadProgressModalProps> = ({ jo
             {/* Inner Center Content */}
             <div className="absolute flex flex-col items-center justify-center text-center">
               {isCompleted ? (
-                <CheckCircle2 className="w-12 h-12 text-emerald-400 animate-bounce" />
+                <CheckCircle2 className="w-12 h-12 text-[#c4eed0] animate-bounce" />
               ) : isError ? (
                 <AlertTriangle className="w-12 h-12 text-red-400" />
               ) : (
                 <>
-                  <span className="text-2xl font-extrabold font-mono text-white">
+                  <span className="text-2xl font-bold font-mono text-[#a8c7fa]">
                     {Math.round(job.progress_percent)}%
                   </span>
-                  <Loader2 className="w-4 h-4 text-amber-400 animate-spin mt-1" />
+                  <Loader2 className="w-4 h-4 text-[#a8c7fa] animate-spin mt-1" />
                 </>
               )}
             </div>
           </div>
 
           {/* Status Label */}
-          <div className="text-sm font-semibold text-center text-gray-300">
+          <div className="text-sm font-medium text-center text-[#90909a] font-mono">
             {getStatusText()}
           </div>
         </div>
 
         {/* Live Metrics Grid */}
         <div className="grid grid-cols-2 gap-3 font-mono text-xs">
-          <div className="bg-white/5 p-3 rounded-xl border border-white/5 flex items-center gap-3">
-            <Gauge className="w-4 h-4 text-amber-400" />
+          <div className="bg-[#0e0f12] p-3 rounded-xl border border-[#28292e] flex items-center gap-3">
+            <Gauge className="w-4 h-4 text-[#a8c7fa]" />
             <div>
-              <span className="text-gray-400 block text-[10px]">SPEED</span>
-              <strong className="text-white">{job.speed_str || '--'}</strong>
+              <span className="text-[#8e8e99] block text-[10px]">SPEED</span>
+              <strong className="text-[#e3e2e6]">{job.speed_str || '--'}</strong>
             </div>
           </div>
 
-          <div className="bg-white/5 p-3 rounded-xl border border-white/5 flex items-center gap-3">
-            <Clock className="w-4 h-4 text-emerald-400" />
+          <div className="bg-[#0e0f12] p-3 rounded-xl border border-[#28292e] flex items-center gap-3">
+            <Clock className="w-4 h-4 text-[#c4eed0]" />
             <div>
-              <span className="text-gray-400 block text-[10px]">ETA</span>
-              <strong className="text-white">{job.eta_str || '--'}</strong>
+              <span className="text-[#8e8e99] block text-[10px]">ETA</span>
+              <strong className="text-[#e3e2e6]">{job.eta_str || '--'}</strong>
             </div>
           </div>
         </div>
 
         {/* Error Message if failed */}
         {isError && (
-          <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-xs text-red-300">
+          <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-xs text-red-300 font-mono">
             {job.error_message || 'An error occurred during transcoding.'}
           </div>
         )}
 
         {/* Automatic Completion Feedback */}
         {isCompleted && (
-          <div className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-extrabold text-sm sm:text-base">
-            <FileCheck className="w-5 h-5 text-emerald-400" />
-            <span>Downloaded directly to your machine!</span>
+          <div className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl bg-[#c4eed0]/15 border border-[#c4eed0]/30 text-[#c4eed0] font-semibold text-sm sm:text-base">
+            <FileCheck className="w-5 h-5 text-[#c4eed0]" />
+            <span>File Downloaded Successfully!</span>
           </div>
         )}
       </div>

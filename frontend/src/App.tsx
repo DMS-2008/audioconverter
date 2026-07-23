@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Header } from './components/Header';
 import { UrlForm } from './components/UrlForm';
 import { MediaCard } from './components/MediaCard';
 import { FormatPicker } from './components/FormatPicker';
 import { DownloadHistory } from './components/DownloadHistory';
 import { ErrorAlert } from './components/ErrorAlert';
+import { QuantumThreadCanvas } from './components/QuantumThreadCanvas';
 import type { MediaInfoResponse, DownloadRequest, JobProgressEvent, DownloadHistoryItem } from './types/media';
-import { Sparkles, ArrowDownToLine, FileVideo, Music2, Cpu } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export const App: React.FC = () => {
@@ -154,29 +153,14 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0B0D13] text-gray-100 selection:bg-amber-500 selection:text-slate-950">
-      <Header />
-
-      <main className="flex-1 max-w-5xl w-full mx-auto px-4 py-8 space-y-8">
-        {/* Hero Banner Header */}
-        <div className="text-center space-y-3 pt-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-semibold text-amber-400">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Instant High-Quality Audio & Video Extraction</span>
-          </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-            Convert Any Web Video to <br />
-            <span className="bg-gradient-to-r from-amber-400 via-yellow-400 to-emerald-400 bg-clip-text text-transparent">
-              Lossless Audio or Ultra HD Video
-            </span>
-          </h2>
-          <p className="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto">
-            Paste a URL from YouTube or supported platforms to select custom resolutions or audio bitrates.
-          </p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0e0f12] text-[#e3e2e6] selection:bg-[#1a73e8] selection:text-white px-4 py-12 relative overflow-hidden">
+      {/* Whisper-Thin Quantum Thread Network Canvas in Free Space */}
+      <QuantumThreadCanvas />
+      <main className="w-full max-w-4xl mx-auto space-y-8 z-20 relative my-auto">
+        {/* Input Form Section */}
+        <div className="space-y-4 text-center">
+          <UrlForm onSubmit={handleFetchMediaInfo} isLoading={isLoadingInfo} />
         </div>
-
-        {/* Input Form */}
-        <UrlForm onSubmit={handleFetchMediaInfo} isLoading={isLoadingInfo} />
 
         {/* Error Feedback Banner */}
         {errorMsg && (
@@ -190,49 +174,8 @@ export const App: React.FC = () => {
 
         {/* Direct Download Success Banner */}
         {downloadSuccessMsg && (
-          <div className="w-full max-w-3xl mx-auto p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-sm font-bold text-center animate-fade-in shadow-xl">
+          <div className="w-full max-w-3xl mx-auto p-4 rounded-2xl bg-[#c4eed0]/15 border border-[#c4eed0]/30 text-[#c4eed0] text-sm font-semibold text-center animate-fade-in shadow-xl font-mono">
             {downloadSuccessMsg}
-          </div>
-        )}
-
-        {/* Empty State when no media fetched */}
-        {!media && !isLoadingInfo && !errorMsg && (
-          <div className="glass-panel rounded-3xl p-10 border border-white/5 text-center space-y-6 max-w-3xl mx-auto">
-            <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto text-amber-400">
-              <ArrowDownToLine className="w-8 h-8 animate-bounce" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-lg font-extrabold text-white">Ready for Conversion</h3>
-              <p className="text-xs text-gray-400 max-w-md mx-auto">
-                Paste any link above to inspect formats, pick your audio bitrate or video resolution, and download.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-white/5 text-left text-xs text-gray-400">
-              <div className="p-3 bg-white/5 rounded-xl border border-white/5 space-y-1">
-                <div className="flex items-center gap-1.5 font-bold text-white">
-                  <FileVideo className="w-4 h-4 text-amber-400" />
-                  <span>Up to 4K Video</span>
-                </div>
-                <p className="text-[11px] text-gray-400">MP4 and WEBM in all available resolutions.</p>
-              </div>
-
-              <div className="p-3 bg-white/5 rounded-xl border border-white/5 space-y-1">
-                <div className="flex items-center gap-1.5 font-bold text-white">
-                  <Music2 className="w-4 h-4 text-emerald-400" />
-                  <span>320kbps Audio</span>
-                </div>
-                <p className="text-[11px] text-gray-400">Pure audio extraction into MP3, M4A, or OPUS.</p>
-              </div>
-
-              <div className="p-3 bg-white/5 rounded-xl border border-white/5 space-y-1">
-                <div className="flex items-center gap-1.5 font-bold text-white">
-                  <Cpu className="w-4 h-4 text-cyan-400" />
-                  <span>Direct Download</span>
-                </div>
-                <p className="text-[11px] text-gray-400">Instant file delivery straight to your Downloads folder.</p>
-              </div>
-            </div>
           </div>
         )}
 
@@ -255,10 +198,6 @@ export const App: React.FC = () => {
           onClearHistory={() => setDownloadHistory([])}
         />
       </main>
-
-      <footer className="w-full border-t border-white/10 py-6 text-center text-xs text-gray-500 font-mono">
-        <p>V2A Engine • Powered by FastAPI, yt-dlp & FFmpeg</p>
-      </footer>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link2, Clipboard, ArrowRight, Loader2, Sparkles, XCircle } from 'lucide-react';
+import { Sparkles, Clipboard, Loader2, XCircle, Play } from 'lucide-react';
 
 interface UrlFormProps {
   onSubmit: (url: string) => void;
@@ -7,8 +7,8 @@ interface UrlFormProps {
 }
 
 const SAMPLE_URLS = [
-  { label: 'YouTube Sample', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
-  { label: 'Vimeo Sample', url: 'https://vimeo.com/76979871' },
+  { label: 'YouTube 4K Demo', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' },
+  { label: 'Vimeo Audio Stream', url: 'https://vimeo.com/76979871' },
 ];
 
 export const UrlForm: React.FC<UrlFormProps> = ({ onSubmit, isLoading }) => {
@@ -18,7 +18,7 @@ export const UrlForm: React.FC<UrlFormProps> = ({ onSubmit, isLoading }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!url.trim()) {
-      setErrorMsg('Please paste or enter a video URL first.');
+      setErrorMsg('Please enter or paste a valid video URL.');
       return;
     }
     setErrorMsg('');
@@ -33,19 +33,19 @@ export const UrlForm: React.FC<UrlFormProps> = ({ onSubmit, isLoading }) => {
         setErrorMsg('');
       }
     } catch {
-      setErrorMsg('Failed to read clipboard. Please paste manually.');
+      setErrorMsg('Failed to read clipboard.');
     }
   };
 
   return (
     <div className="w-full max-w-3xl mx-auto space-y-3">
-      <form onSubmit={handleSubmit} className="relative group">
-        {/* Glow backdrop */}
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-500/30 via-yellow-500/20 to-emerald-500/30 rounded-2xl blur-lg opacity-75 group-hover:opacity-100 transition duration-300"></div>
+      <form onSubmit={handleSubmit} className="relative group transition-all duration-300">
+        {/* Ambient Gradient Glow - Active ONLY when mouse pointer enters section */}
+        <div className="absolute -inset-1 gemini-gradient-bg rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out pointer-events-none"></div>
 
-        <div className="relative flex items-center bg-[#131722] border border-white/10 rounded-2xl p-2 shadow-2xl focus-within:border-amber-500/60 transition-all">
-          <div className="pl-3 pr-2 text-gray-400">
-            <Link2 className="w-6 h-6 text-amber-400" />
+        <div className="relative flex items-center bg-[#18191d] border border-[#28292e] group-hover:border-[#a8c7fa]/50 rounded-2xl p-2.5 shadow-2xl prompt-input-glow transition-all duration-300 transform group-hover:-translate-y-0.5">
+          <div className="pl-3 pr-2 text-[#a8c7fa]">
+            <Sparkles className="w-5 h-5 text-[#a8c7fa]" />
           </div>
 
           <input
@@ -55,8 +55,8 @@ export const UrlForm: React.FC<UrlFormProps> = ({ onSubmit, isLoading }) => {
               setUrl(e.target.value);
               if (errorMsg) setErrorMsg('');
             }}
-            placeholder="Paste YouTube, Vimeo or Web Video URL here..."
-            className="w-full bg-transparent text-white placeholder-gray-500 text-sm sm:text-base px-2 py-3 focus:outline-none"
+            placeholder="Enter YouTube, Vimeo, or video URL to process..."
+            className="w-full bg-transparent text-[#e3e2e6] placeholder-[#8e8e99] text-sm sm:text-base px-2 py-2 focus:outline-none font-sans font-medium"
             disabled={isLoading}
           />
 
@@ -64,7 +64,7 @@ export const UrlForm: React.FC<UrlFormProps> = ({ onSubmit, isLoading }) => {
             <button
               type="button"
               onClick={() => setUrl('')}
-              className="p-2 text-gray-400 hover:text-white transition-colors"
+              className="p-2 text-[#8e8e99] hover:text-[#e3e2e6] transition-colors"
               title="Clear input"
             >
               <XCircle className="w-5 h-5" />
@@ -74,26 +74,26 @@ export const UrlForm: React.FC<UrlFormProps> = ({ onSubmit, isLoading }) => {
           <button
             type="button"
             onClick={handlePaste}
-            className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-gray-300 bg-white/5 hover:bg-white/10 rounded-xl border border-white/5 transition-colors mr-2"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-[#d3e3fd] bg-[#28292e] hover:bg-[#383940] rounded-xl border border-white/5 transition-colors mr-2 font-mono"
           >
-            <Clipboard className="w-3.5 h-3.5" />
+            <Clipboard className="w-3.5 h-3.5 text-[#a8c7fa]" />
             Paste
           </button>
 
           <button
             type="submit"
             disabled={isLoading || !url.trim()}
-            className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm shadow-lg shadow-amber-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform active:scale-95 whitespace-nowrap"
+            className="flex items-center gap-2 px-6 py-2.5 rounded-xl gemini-gradient-bg hover:brightness-110 text-white font-semibold text-sm sm:text-base shadow-lg shadow-[#1a73e8]/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform active:scale-95 whitespace-nowrap"
           >
             {isLoading ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin text-slate-950" />
-                <span>Fetching...</span>
+                <Loader2 className="w-4 h-4 animate-spin text-white" />
+                <span>Processing...</span>
               </>
             ) : (
               <>
-                <span>Extract Formats</span>
-                <ArrowRight className="w-4 h-4" />
+                <Play className="w-4 h-4 text-white fill-white" />
+                <span>Run / Extract</span>
               </>
             )}
           </button>
@@ -107,10 +107,10 @@ export const UrlForm: React.FC<UrlFormProps> = ({ onSubmit, isLoading }) => {
       )}
 
       {/* Quick Presets */}
-      <div className="flex items-center justify-between px-2 pt-1 text-xs text-gray-400">
-        <span className="flex items-center gap-1 text-gray-500">
-          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-          Quick Test URLs:
+      <div className="flex items-center justify-between px-2 pt-1 text-xs text-[#90909a]">
+        <span className="flex items-center gap-1.5 text-[#8e8e99] font-mono">
+          <Sparkles className="w-3.5 h-3.5 text-[#a8c7fa]" />
+          Example Prompts:
         </span>
         <div className="flex items-center gap-2">
           {SAMPLE_URLS.map((sample, idx) => (
@@ -121,7 +121,7 @@ export const UrlForm: React.FC<UrlFormProps> = ({ onSubmit, isLoading }) => {
                 setUrl(sample.url);
                 onSubmit(sample.url);
               }}
-              className="text-amber-400/80 hover:text-amber-300 underline underline-offset-2 hover:bg-amber-400/10 px-2 py-0.5 rounded transition-colors"
+              className="text-[#a8c7fa] hover:text-white font-medium hover:bg-[#1a73e8]/15 px-2.5 py-1 rounded-lg transition-colors border border-[#1a73e8]/20"
             >
               {sample.label}
             </button>
