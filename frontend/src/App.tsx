@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { UrlForm } from './components/UrlForm';
 import { MediaCard } from './components/MediaCard';
 import { FormatPicker } from './components/FormatPicker';
-import { DownloadHistory } from './components/DownloadHistory';
 import { ErrorAlert } from './components/ErrorAlert';
 import { QuantumThreadCanvas } from './components/QuantumThreadCanvas';
-import type { MediaInfoResponse, DownloadRequest, JobProgressEvent, DownloadHistoryItem } from './types/media';
+import type { MediaInfoResponse, DownloadRequest, JobProgressEvent } from './types/media';
 import confetti from 'canvas-confetti';
 
 export const App: React.FC = () => {
@@ -17,23 +16,6 @@ export const App: React.FC = () => {
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [currentJob, setCurrentJob] = useState<JobProgressEvent | null>(null);
   const [downloadSuccessMsg, setDownloadSuccessMsg] = useState<string>('');
-  
-  const [downloadHistory, setDownloadHistory] = useState<DownloadHistoryItem[]>(() => {
-    try {
-      const saved = localStorage.getItem('v2a_history');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('v2a_history', JSON.stringify(downloadHistory));
-    } catch (e) {
-      console.error('Failed to save download history', e);
-    }
-  }, [downloadHistory]);
 
   const handleFetchMediaInfo = async (url: string) => {
     setIsLoadingInfo(true);
@@ -113,23 +95,6 @@ export const App: React.FC = () => {
               document.body.removeChild(link);
 
               setDownloadSuccessMsg(`🎉 File downloaded directly to your local machine!`);
-
-              // Add to history
-              if (media) {
-                const newHistoryItem: DownloadHistoryItem = {
-                  id: Math.random().toString(36).substring(2, 9),
-                  jobId: jobEvent.job_id,
-                  title: media.title,
-                  thumbnail: media.thumbnail || undefined,
-                  type: req.type,
-                  quality: req.target_quality,
-                  ext: req.target_ext,
-                  fileSizeMb: jobEvent.total_bytes ? Math.round((jobEvent.total_bytes / (1024 * 1024)) * 10) / 10 : undefined,
-                  downloadUrl: jobEvent.download_url,
-                  timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                };
-                setDownloadHistory((prev) => [newHistoryItem, ...prev]);
-              }
             }
           } else if (jobEvent.status === 'error') {
             eventSource.close();
@@ -191,12 +156,6 @@ export const App: React.FC = () => {
             />
           </div>
         )}
-
-        {/* Session Download History */}
-        <DownloadHistory
-          history={downloadHistory}
-          onClearHistory={() => setDownloadHistory([])}
-        />
       </main>
     </div>
   );

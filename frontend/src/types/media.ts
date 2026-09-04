@@ -48,16 +48,3 @@ export interface JobProgressEvent {
   download_url?: string | null;
   error_message?: string | null;
 }
-
-export interface DownloadHistoryItem {
-  id: string;
-  jobId: string;
-  title: string;
-  thumbnail?: string;
-  type: "video" | "audio";
-  quality: string;
-  ext: string;
-  fileSizeMb?: number;
-  downloadUrl: string;
-  timestamp: string;
-}
