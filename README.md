@@ -23,7 +23,7 @@
 (YouTube, Vimeo, etc.)    (Pick Resolution or Bitrate)     (Auto-saved to Downloads)
 ```
 
-1. **Paste URL**: Enter or paste any video or audio link into the glowing search bar.
+1. **Paste URL**: Enter or paste any video or audio link into the search bar.
 2. **Select Output Mode**:
    - **Video Mode**: Pick your desired resolution (**4K 2160p**, **2K 1440p**, **1080p Full HD**, **720p HD**, **480p**) and container (`.mp4` / `.webm`).
    - **Audio Mode**: Pick your preferred format (`.mp3`, `.m4a`, `.opus`) and bitrate (**320 kbps Master**, **192 kbps High**, **128 kbps Standard**).
@@ -89,22 +89,19 @@ audioconverter/
 │
 ├── ⚙️ backend/                              # Python FastAPI backend service
 │   ├── main.py                              # MAIN LAUNCHER: Runs Uvicorn server & opens browser
-│   ├── requirements.txt                     # Dependencies (FastAPI, yt-dlp, static-ffmpeg, pytest)
+│   ├── requirements.txt                     # Dependencies (FastAPI, yt-dlp, static-ffmpeg, uvicorn)
 │   ├── temp_downloads/                      # Temporary storage for downloaded media (auto-cleaned)
 │   │
-│   ├── app/                                 # Core backend application package
-│   │   ├── main.py                          # FastAPI instance, CORS, routers & static UI mount
-│   │   ├── config.py                        # Settings, static-ffmpeg initialization & retention limits
-│   │   ├── schemas.py                       # Pydantic models for requests, media info & progress
-│   │   ├── routers/                         # API route controllers
-│   │   │   ├── media.py                     # /api/info, /api/download, /api/stream endpoints
-│   │   │   └── progress.py                  # /api/progress/{job_id} SSE streaming endpoint
-│   │   └── services/                        # Business logic & background workers
-│   │       ├── media_service.py             # URL validation & yt-dlp metadata extraction
-│   │       └── job_queue.py                 # Async job queue, concurrency semaphore & FFmpeg post-processing
-│   │
-│   └── tests/                               # Backend test suite
-│       └── test_media_api.py                # Pytest unit tests for API routes and URL validation
+│   └── app/                                 # Core backend application package
+│       ├── main.py                          # FastAPI instance, CORS, routers & static UI mount
+│       ├── config.py                        # Settings, static-ffmpeg initialization & retention limits
+│       ├── schemas.py                       # Pydantic models for requests, media info & progress
+│       ├── routers/                         # API route controllers
+│       │   ├── media.py                     # /api/info, /api/download, /api/stream endpoints
+│       │   └── progress.py                  # /api/progress/{job_id} SSE streaming endpoint
+│       └── services/                        # Business logic & background workers
+│           ├── media_service.py             # URL validation & yt-dlp metadata extraction
+│           └── job_queue.py                 # Async job queue, concurrency semaphore & FFmpeg post-processing
 │
 └── 📄 README.md                             # Documentation & user guide
 ```
@@ -170,16 +167,6 @@ AudioStream exposes clean REST and SSE endpoints with interactive Swagger docs a
 | `GET` | `/api/progress/{job_id}` | Real-time Server-Sent Events (SSE) stream broadcasting percent, speed (`MB/s`), and ETA. |
 | `GET` | `/api/stream/{job_id}` | Streams the completed file directly to the client browser and purges server copy. |
 | `GET` | `/api/health` | Service health status check returning uptime, active jobs, and server metrics. |
-
----
-
-## 🧪 Testing
-
-Run the automated backend Pytest suite:
-```bash
-cd backend
-python -m pytest tests/
-```
 
 ---
 
